@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nosso Natal - Para Ana Paula</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fontes Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:wght@300;400;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Configurações Globais --- */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff0f5; /* Lavanda avermelhada bem clara */
+            color: #4a4a4a;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Fontes Personalizadas */
+        .font-title { font-family: 'Lobster', cursive; letter-spacing: 1px; }
+        .font-handwriting { font-family: 'Sacramento', cursive; }
+
+        /* --- Animação de Fundo (Neve/Corações) --- */
+        .falling-item {
+            position: fixed;
+            top: -10px;
+            z-index: 50;
+            user-select: none;
+            cursor: default;
+            animation-name: fall, shake;
+            animation-duration: 10s, 3s;
+            animation-timing-function: linear, ease-in-out;
+            animation-iteration-count: infinite, infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes fall {
+            0% { top: -10% }
+            100% { top: 100% }
+        }
+        @keyframes shake {
+            0% { transform: translateX(0px) }
+            50% { transform: translateX(40px) }
+            100% { transform: translateX(0px) }
+        }
+
+        /* --- Estilo Polaroid --- */
+        .polaroid-container {
+            perspective: 1000px;
+        }
+        .polaroid {
+            background: white;
+            padding: 12px 12px 40px 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .polaroid:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 20;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        /* Rotações aleatórias para dar charme */
+        .polaroid:nth-child(1) { transform: rotate(-2deg); }
+        .polaroid:nth-child(2) { transform: rotate(3deg); }
+        .polaroid:nth-child(3) { transform: rotate(-3deg); }
+        .polaroid:nth-child(4) { transform: rotate(2deg); }
+        .polaroid:nth-child(5) { transform: rotate(-1deg); }
+
+        /* --- Timeline --- */
+        .timeline-line {
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #e11d48, #ffb6c1, #e11d48);
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -10px;
+            top: 24px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e11d48;
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px #e11d48;
+        }
+        /* Efeito de "muitos momentos" */
+        .timeline-gap {
+            border-left: 3px dashed #e11d48;
+            margin-left: 24px;
+            height: 60px;
+            opacity: 0.5;
+        }
+
+        /* --- Carta Modal --- */
+        #letter-modal {
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .letter-paper {
+            background-image: linear-gradient(#fffdf5 1px, transparent 1px);
+            background-size: 100% 2em;
+            line-height: 2em;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        /* Botão Pulsante */
+        .btn-pulse {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(225, 29, 72, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+        }
+
+        /* --- Player Spotify Style --- */
+        .spotify-player {
+            background: #191414; /* Fundo Escuro Spotify */
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 350px;
+            margin: 0 auto;
+            border: 1px solid #282828;
+            transition: transform 0.2s;
+        }
+        .spotify-player:hover {
+            transform: scale(1.02);
+        }
+        .album-cover {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .album-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .track-info {
+            flex: 1;
+            text-align: left;
+            overflow: hidden;
+        }
+        .track-title {
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .track-artist {
+            color: #b3b3b3;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .spotify-btn {
+            width: 45px;
+            height: 45px;
+            background: #1DB954; /* Verde Spotify */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            border: none;
+            flex-shrink: 0;
+        }
+        .spotify-btn:hover {
+            transform: scale(1.1);
+            background: #1ed760;
+        }
+        
+        /* Animaçãozinha de equalizador simples no canto da capa quando toca */
+        .playing-indicator {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            display: flex;
+            gap: 2px;
+            height: 12px;
+            align-items: flex-end;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .playing .playing-indicator {
+            opacity: 1;
+        }
+        .eq-bar {
+            width: 3px;
+            background: #1DB954;
+            animation: spotify-eq 0.8s infinite ease-in-out;
+        }
+        .eq-bar:nth-child(1) { animation-delay: 0.1s; height: 60%; }
+        .eq-bar:nth-child(2) { animation-delay: 0.3s; height: 100%; }
+        .eq-bar:nth-child(3) { animation-delay: 0.5s; height: 40%; }
+        
+        @keyframes spotify-eq {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+    </style>
+</head>
+<body class="pb-10">
+
+    <!-- Container de Efeitos -->
+    <div id="falling-container"></div>
+
+    <!-- 1. HERO SECTION -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center text-center px-4 bg-cover bg-center bg-no-repeat bg-fixed" 
+            style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?q=80&w=2069&auto=format&fit=crop');">
+        
+        <div class="z-10 text-white animate-fade-in-up max-w-3xl">
+            <p class="text-xl md:text-2xl font-light mb-4 tracking-widest uppercase text-pink-200">Para Ana Paula</p>
+            <h1 class="text-6xl md:text-8xl font-title text-red-500 drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] mb-6 transform -rotate-2">
+                Feliz Natal, Amor
+            </h1>
+            <p class="text-lg md:text-2xl font-light italic opacity-95 mb-10">
+                "Você é o meu melhor presente, hoje e em todos os natais que virão."
+            </p>
+            
+            <button onclick="openLetter()" class="inline-block bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-10 rounded-full shadow-2xl transition transform hover:scale-105 btn-pulse cursor-pointer border-2 border-white/30">
+                <i class="fas fa-envelope-open-text mr-3"></i> Ler Carta Especial
+            </button>
+        </div>
+        
+        <div class="absolute bottom-8 animate-bounce text-white text-3xl opacity-80">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </header>
+
+    <!-- 2. MÚSICA (NOVO PLAYER PERSONALIZADO) -->
+    <!-- 2. MÚSICA (PLAYER ESTILO SPOTIFY) -->
+    <section id="music" class="py-12 px-4 container mx-auto max-w-md relative z-20 -mt-20">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 text-center border-t-8 border-red-500 transform transition hover:-translate-y-2">
+            <h2 class="text-4xl font-title text-red-600 mb-2">Nosso tempo juntos ❤️</h2>
+            <p class="text-sm text-gray-500 mb-6 italic">A música que define nosso relacionamento</p>
+            
+            <!-- Player Customizado Spotify -->
+            <div class="spotify-player" id="spotify-player-card">
+                
+                <!-- Capa do Album -->
+                <div class="album-cover">
+                    <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/ab67616d0000b2730c76be87f513c8361d06d6bd.png" alt="Capa do Album">
+                    
+                    <!-- Indicador visual de tocando -->
+                    <div class="playing-indicator" id="eq-indicator">
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Info da Música -->
+                <div class="track-info">
+                    <div class="track-title">A Thousand Years</div>
+                    <div class="track-artist">Christina Perri</div>
+                </div>
+
+                <!-- Botão Play -->
+                <button class="spotify-btn" onclick="toggleAudio()">
+                    <i class="fas fa-play ml-1" id="play-icon"></i>
+                </button>
+
+                <!-- Elemento de Áudio -->
+                <audio id="myAudio" loop>
+                    <source src="https://resetnoturno.com.br/wp-content/uploads/2025/12/a-thousand-years-0.mp3" type="audio/mpeg">
+                    Seu navegador não suporta áudio HTML5.
+                </audio>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- 3. CONTADOR -->
+    <section class="py-16 text-center bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-5xl font-title text-red-600 mb-2">Tempo que te Amo</h2>
+            <p class="text-gray-500 mb-8 font-medium uppercase tracking-widest text-sm">Juntos desde 2024</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                <div class="bg-red-50 p-6 rounded-2xl shadow-sm border border-red-100">
+                    <span id="days" class="block text-4xl md:text-5xl font-bold text-red-600 font-title">00</span>
+                    <span class="text-xs text-gray-600 uppercase tracking-wide font-bold">Dias</span>
+                </div>
+                <div class="bg-red-50 p-6 rounded-2xl shadow-sm border border-red-100">
+                    <span id="hours" class="block text-4xl md:text-5xl font-bold text-red-600 font-title">00</span>
+                    <span class="text-xs text-gray-600 uppercase tracking-wide font-bold">Horas</span>
+                </div>
+                <div class="bg-red-50 p-6 rounded-2xl shadow-sm border border-red-100">
+                    <span id="minutes" class="block text-4xl md:text-5xl font-bold text-red-600 font-title">00</span>
+                    <span class="text-xs text-gray-600 uppercase tracking-wide font-bold">Minutos</span>
+                </div>
+                <div class="bg-red-50 p-6 rounded-2xl shadow-sm border border-red-100">
+                    <span id="seconds" class="block text-4xl md:text-5xl font-bold text-red-600 font-title">00</span>
+                    <span class="text-xs text-gray-600 uppercase tracking-wide font-bold">Segundos</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. GALERIA DE MOMENTOS -->
+    <section class="py-20 bg-gradient-to-b from-red-50 to-white overflow-hidden">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-5xl font-title text-red-600 mb-12">Nossos Registros</h2>
+            
+            <div class="flex flex-wrap justify-center gap-8 md:gap-12 max-w-6xl mx-auto polaroid-container pb-10">
+                
+                <!-- Foto 1: Primeira Foto -->
+                <div class="polaroid w-64 md:w-72">
+                    <div class="h-64 bg-gray-200 overflow-hidden">
+                        <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.50.14.jpeg" 
+                             alt="Nossa primeira foto" class="w-full h-full object-cover filter contrast-110">
+                    </div>
+                    <p class="font-handwriting text-3xl mt-4 text-gray-700">Nossa primeira foto</p>
+                </div>
+
+                <!-- Foto 2: Em São Paulo -->
+                <div class="polaroid w-64 md:w-72">
+                    <div class="h-64 bg-gray-200 overflow-hidden">
+                        <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.50.14-1.jpeg" 
+                             alt="São Paulo" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-3xl mt-4 text-gray-700">A gente em São Paulo</p>
+                </div>
+
+                <!-- Foto 3: Restaurante -->
+                <div class="polaroid w-64 md:w-72">
+                    <div class="h-64 bg-gray-200 overflow-hidden">
+                        <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.53.48.jpeg" 
+                             alt="Restaurante" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-3xl mt-4 text-gray-700">Nosso restaurante preferido</p>
+                </div>
+
+                <!-- Foto 4: Viagem -->
+                <div class="polaroid w-64 md:w-72">
+                    <div class="h-64 bg-gray-200 overflow-hidden">
+                        <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.50.42.jpeg" 
+                             alt="Viagem" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-3xl mt-4 text-gray-700">Nossa viagem de casal</p>
+                </div>
+
+                <!-- Foto 5: Fruto do amor -->
+                <div class="polaroid w-64 md:w-72">
+                    <div class="h-64 bg-gray-200 overflow-hidden">
+                        <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.52.16.jpeg" 
+                             alt="Fruto do amor" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-handwriting text-3xl mt-4 text-gray-700">O Fruto do nosso amor <i class="fas fa-heart text-red-500 text-sm"></i></p>
+                </div>
+
+            </div>
+
+            <!-- Contador Infinito -->
+            <div class="mt-12 animate-pulse">
+                <i class="fas fa-infinity text-6xl text-red-400 mb-2"></i>
+                <p class="text-xl font-light text-gray-600">Virão muitos mais momentos em nosso futuro juntos</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. TIMELINE HISTÓRIA -->
+    <section class="py-16 bg-white relative">
+        <div class="container mx-auto px-4 max-w-2xl">
+            <h2 class="text-5xl font-title text-center text-red-600 mb-16">Nossa História</h2>
+            
+            <div class="relative pl-8 space-y-12">
+                <!-- Linha Vertical Principal -->
+                <div class="timeline-line"></div>
+
+                <!-- 1. O Início -->
+                <div class="relative group">
+                    <div class="timeline-dot group-hover:bg-red-600 transition"></div>
+                    <div class="bg-red-50 p-6 rounded-xl shadow-sm border-l-4 border-red-500 hover:shadow-md transition">
+                        <span class="text-xs font-bold text-red-500 uppercase tracking-wide flex items-center gap-2">
+                            <i class="far fa-calendar-alt"></i> 22 de Dezembro de 2017
+                        </span>
+                        <h3 class="text-2xl font-title text-gray-800 mt-2">O Início de Tudo</h3>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed text-justify">
+                            O dia que nos conhecemos no Amino. Lembro exatamente da primeira vez que vi seu rosto, foi amor à primeira vista. Depois disso, viriam tantas coisas...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. Primeiro Eu te Amo -->
+                <div class="relative group">
+                    <div class="timeline-dot group-hover:bg-red-600 transition"></div>
+                    <div class="bg-red-50 p-6 rounded-xl shadow-sm border-l-4 border-red-500 hover:shadow-md transition">
+                        <span class="text-xs font-bold text-red-500 uppercase tracking-wide flex items-center gap-2">
+                            <i class="far fa-heart"></i> 12 de Junho de 2024
+                        </span>
+                        <h3 class="text-2xl font-title text-gray-800 mt-2">O Renascimento do Amor</h3>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed text-justify">
+                            Eu voltei a te amar bem antes disso, mas nesse dia eu tive a certeza que estava disposto a lutar para poder te encontrar pessoalmente e dizer "Eu te amo" olhando seus olhos.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 3. Primeiro Encontro -->
+                <div class="relative group">
+                    <div class="timeline-dot group-hover:bg-red-600 transition"></div>
+                    <div class="bg-red-50 p-6 rounded-xl shadow-sm border-l-4 border-red-500 hover:shadow-md transition">
+                        <span class="text-xs font-bold text-red-500 uppercase tracking-wide flex items-center gap-2">
+                            <i class="fas fa-plane-arrival"></i> 16 de Novembro de 2024
+                        </span>
+                        <h3 class="text-2xl font-title text-gray-800 mt-2">Nosso Primeiro Encontro</h3>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed text-justify">
+                            Eu nunca vou esquecer esse dia em que te encontrei pessoalmente pela primeira vez, no aeroporto, e pude sentir seu cheiro, te beijar e dizer Eu te Amo enquanto tremia igual um pinscher.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4. Primeiro Natal -->
+                <div class="relative group">
+                    <div class="timeline-dot group-hover:bg-red-600 transition"></div>
+                    <div class="bg-red-50 p-6 rounded-xl shadow-sm border-l-4 border-red-500 hover:shadow-md transition">
+                        <span class="text-xs font-bold text-red-500 uppercase tracking-wide flex items-center gap-2">
+                            <i class="fas fa-tree"></i> 24 de Dezembro de 2024
+                        </span>
+                        <h3 class="text-2xl font-title text-gray-800 mt-2">Nosso Primeiro Natal</h3>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed text-justify">
+                            Me sinto extremamente feliz de poder ter passado esse natal ao seu lado e de ter apresentado a mulher que eu mais amo nesse mundo às pessoas mais importantes para mim.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Efeito de passagem de tempo -->
+                <div class="timeline-gap flex items-center pl-4 text-red-400">
+                    <span class="bg-white px-2 text-sm italic">Muitos momentos inesquecíveis depois...</span>
+                </div>
+
+                <!-- 5. Natal Atual (2025) -->
+                <div class="relative group">
+                    <div class="timeline-dot bg-green-500 border-green-600 shadow-[0_0_10px_#22c55e]"></div>
+                    <div class="bg-gradient-to-br from-green-50 to-white p-6 rounded-xl shadow-lg border-l-4 border-green-600 hover:shadow-xl transition transform hover:scale-105">
+                        <span class="text-xs font-bold text-green-600 uppercase tracking-wide flex items-center gap-2">
+                            <i class="fas fa-star text-yellow-500"></i> 25 de Dezembro de 2025
+                        </span>
+                        <h3 class="text-2xl font-title text-gray-800 mt-2">Nosso Segundo Natal Juntos</h3>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed text-justify">
+                            Hoje completamos mais um ciclo mágico. Mesmo que dessa vez a gente passe longe um do outro fisicamente, meu coração está aí com você. Eu te amo infinitamente e me sinto ao seu lado em cada pensamento. Obrigado por fazer meu 2025 valer a pena.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. MODAL DA CARTA (ESCONDIDO) -->
+    <div id="letter-modal" class="fixed inset-0 z-[9999] bg-black/80 hidden opacity-0 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[#fffdf5] w-full max-w-2xl rounded-lg shadow-2xl relative transform transition-all scale-95 duration-500" id="letter-content">
+            
+            <!-- Botão Fechar -->
+            <button onclick="closeLetter()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition text-2xl z-10">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Conteúdo da Carta -->
+            <div class="p-8 md:p-12 overflow-y-auto max-h-[90vh] letter-paper relative">
+                <!-- Selo Decorativo -->
+                <div class="absolute top-0 right-0 m-6 opacity-20 transform rotate-12 pointer-events-none hidden md:block">
+                    <i class="fas fa-stamp text-6xl text-red-800"></i>
+                </div>
+
+                <div class="text-center mb-8">
+                    <span class="text-red-500 text-3xl"><i class="fas fa-heart"></i></span>
+                    <h2 class="text-3xl font-title text-gray-800 mt-2">Minha Ana Paula</h2>
+                    <p class="text-sm text-gray-500">Natal de 2025</p>
+                </div>
+
+                <div class="font-handwriting text-2xl md:text-3xl text-gray-700 space-y-6 leading-loose text-justify">
+                    <p>
+                        Hoje é um dia extremamente especial, pois nessa véspera de natal, nos completamos 1 ano do nosso primeiro natal juntos, a primeira vez que eu tive a oportunidade de apresentar a mulher que eu amo e que quero levar pro resto da minha vida aos meus pais e aos meus amigos. A mulher que eu escolhi para ser minha parceira de vida.
+                    </p>
+                    <p>
+                        É uma data extremamente especial para mim pois além disso, é a data que eu escolhi para te ver pela segunda vez: Desde a primeira vez que eu te vi, no seu aniversário, não saia da minha cabeça que daqui a alguns dias nós íamos ficar longe novamente e eu só conseguia pensar em quando eu te viria novamente.
+                    </p>
+                    <p>
+                        Passamos por vários momentos desde então, e eu só consigo ser extremamente grato por ter você ao meu lado.
+                    </p>
+                    <p>
+                        Infelizmente dessa vez não pudemos ficar grudadinhos nesse natal como queríamos, mas daqui a 1 mês já estaremos trocando vários beijinhos...
+                    </p>
+                    <p class="text-red-600 font-bold mt-8 text-center text-4xl">
+                        Eu te amo infinitamente, Ana Paula.
+                    </p>
+                    <p class="text-center text-lg text-gray-500 sans-serif mt-4">
+                        E esse é meu presente de natal para você 😳🫣
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-10 bg-red-50 text-red-400 text-sm mt-10">
+        <p class="mb-2 font-title text-xl">Para sempre nós.</p>
+        <p>&copy; 2025</p>
+    </footer>
+
+    <!-- JAVASCRIPT LÓGICA -->
+    <script>
+        // --- 0. LÓGICA DO PLAYER DE ÁUDIO ---
+        function toggleAudio() {
+            const audio = document.getElementById('myAudio');
+            const icon = document.getElementById('play-icon');
+            const playerCard = document.getElementById('spotify-player-card');
+
+            if (audio.paused) {
+                audio.play();
+                icon.classList.remove('fa-play', 'ml-1');
+                icon.classList.add('fa-pause');
+                playerCard.classList.add('playing'); // Ativa a animação das barras
+            } else {
+                audio.pause();
+                icon.classList.remove('fa-pause');
+                icon.classList.add('fa-play', 'ml-1');
+                playerCard.classList.remove('playing');
+            }
+        }
+
+        // --- 1. LÓGICA DO MODAL DA CARTA ---
+        function openLetter() {
+            const modal = document.getElementById('letter-modal');
+            const content = document.getElementById('letter-content');
+            
+            modal.classList.remove('hidden');
+            // Pequeno delay para permitir a transição CSS
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeLetter() {
+            const modal = document.getElementById('letter-modal');
+            const content = document.getElementById('letter-content');
+            
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 500);
+        }
+
+        // --- 2. CONTADOR DE TEMPO ---
+        // Data: 12 de Junho de 2024 as 20:00:00
+        const startDate = new Date(2024, 5, 12, 20, 0, 0); 
+
+        function updateCounter() {
+            // Simulando que "agora" é 24 de Dezembro de 2025, já que o usuário pediu esse contexto
+            // Se você quiser usar a data REAL do sistema, troque fixedNow por new Date()
+            // Mas para o exemplo funcionar como pedido (contexto de 2025):
+            
+            // ATENÇÃO: Vou usar a data real do sistema para o contador funcionar pra sempre
+            // Mas se quiser travar em 2025, descomente a linha abaixo:
+            // const now = new Date(2025, 11, 24, 15, 11); 
+            
+            const now = new Date(); // Data real atual
+            
+            const diff = now - startDate;
+
+            if (diff >= 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = String(days).padStart(2, '0');
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            }
+        }
+
+        setInterval(updateCounter, 1000);
+        updateCounter();
+
+        // --- 3. EFEITO DE NEVE E CORAÇÕES ---
+        function createFallingElement() {
+            const container = document.getElementById('falling-container');
+            const element = document.createElement('div');
+            
+            const isHeart = Math.random() > 0.6; // 40% chance de ser coração
+            element.innerHTML = isHeart ? '<i class="fas fa-heart"></i>' : '<i class="far fa-snowflake"></i>';
+            
+            element.classList.add('falling-item');
+            
+            element.style.left = Math.random() * 100 + 'vw';
+            element.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            element.style.color = isHeart ? '#ef4444' : '#bbf7d0'; // Vermelho ou Verde claro
+            element.style.opacity = Math.random() * 0.6 + 0.2;
+            element.style.animationDuration = (Math.random() * 5 + 8) + 's'; 
+
+            container.appendChild(element);
+
+            setTimeout(() => {
+                element.remove();
+            }, 13000);
+        }
+
+        setInterval(createFallingElement, 400);
+    </script>
+</body>
+</html>
