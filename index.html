@@ -193,7 +193,6 @@
             background: #1ed760;
         }
         
-        /* Animaçãozinha de equalizador simples no canto da capa quando toca */
         .playing-indicator {
             position: absolute;
             bottom: 4px;
@@ -220,6 +219,47 @@
         @keyframes spotify-eq {
             0%, 100% { height: 20%; }
             50% { height: 100%; }
+        }
+
+        /* --- Estilo Checklist (Sonhos) --- */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .checklist-item:hover {
+            transform: translateX(5px);
+        }
+        .check-box {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .checked {
+            background: #10b981;
+            color: white;
+        }
+        .unchecked {
+            border: 2px solid #e5e7eb;
+            color: transparent;
+        }
+
+        /* --- Estilo Saudade (Frases) --- */
+        .saudade-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(225, 29, 72, 0.1);
+            border: 2px dashed #fecdd3;
         }
     </style>
 </head>
@@ -251,7 +291,6 @@
         </div>
     </header>
 
-    <!-- 2. MÚSICA (NOVO PLAYER PERSONALIZADO) -->
     <!-- 2. MÚSICA (PLAYER ESTILO SPOTIFY) -->
     <section id="music" class="py-12 px-4 container mx-auto max-w-md relative z-20 -mt-20">
         <div class="bg-white rounded-3xl shadow-2xl p-6 text-center border-t-8 border-red-500 transform transition hover:-translate-y-2">
@@ -290,11 +329,49 @@
                     Seu navegador não suporta áudio HTML5.
                 </audio>
             </div>
-            
         </div>
     </section>
 
-    <!-- 3. CONTADOR -->
+    <!-- 3. A IMAGEM DO REENCONTRO (NOVA SEÇÃO) -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-2xl">
+            <div class="bg-gradient-to-br from-red-50 to-pink-50 rounded-3xl p-6 md:p-10 shadow-xl border border-red-100 relative overflow-hidden">
+                <!-- Efeito decorativo -->
+                <div class="absolute top-0 right-0 -mt-10 -mr-10 w-32 h-32 bg-red-200 rounded-full opacity-20 blur-2xl"></div>
+                
+                <h2 class="text-3xl md:text-4xl font-title text-center text-red-600 mb-8 leading-tight">
+                    A Imagem que fez eu me apaixonar novamente
+                </h2>
+
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <!-- Foto Especial ATUALIZADA -->
+                    <div class="w-full md:w-1/2 relative transform rotate-1 hover:rotate-0 transition duration-500">
+                        <div class="absolute inset-0 bg-red-400 rounded-2xl transform translate-x-2 translate-y-2"></div>
+                        <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-17.16.25.jpeg" 
+                             alt="Foto do Story com a Preta" 
+                             class="relative rounded-2xl shadow-lg w-full h-auto border-4 border-white object-cover">
+                    </div>
+
+                    <!-- Texto Emocionante -->
+                    <div class="w-full md:w-1/2">
+                        <div class="font-handwriting text-2xl text-gray-700 leading-relaxed text-justify">
+                            <p>
+                                Quando você postou essa foto nos Storys, meu coração pulsou novamente por você. Foi como uma flechada do amor! 
+                            </p>
+                            <p class="mt-4">
+                                Ver você, que sempre foi tão linda, ao lado de um gatinho preto — que eu amo tanto e que mais tarde saberia que é a <strong>Preta</strong> — despertou algo único em mim. Aquele momento simples reacendeu uma chama e me fez ter cada vez mais interesse por você.
+                            </p>
+                            <p class="mt-4">
+                                E a partir dali, a cada dia, a cada conversa boba, a cada Reels enviado de madrugada, eu fui tendo a certeza absoluta que nós nascemos um para o outro e que nossa história estava apenas recomeçando.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CONTADOR -->
     <section class="py-16 text-center bg-white">
         <div class="container mx-auto px-4">
             <h2 class="text-5xl font-title text-red-600 mb-2">Tempo que te Amo</h2>
@@ -321,14 +398,14 @@
         </div>
     </section>
 
-    <!-- 4. GALERIA DE MOMENTOS -->
+    <!-- 5. GALERIA DE MOMENTOS -->
     <section class="py-20 bg-gradient-to-b from-red-50 to-white overflow-hidden">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-5xl font-title text-red-600 mb-12">Nossos Registros</h2>
             
             <div class="flex flex-wrap justify-center gap-8 md:gap-12 max-w-6xl mx-auto polaroid-container pb-10">
                 
-                <!-- Foto 1: Primeira Foto -->
+                <!-- Foto 1 -->
                 <div class="polaroid w-64 md:w-72">
                     <div class="h-64 bg-gray-200 overflow-hidden">
                         <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.50.14.jpeg" 
@@ -337,7 +414,7 @@
                     <p class="font-handwriting text-3xl mt-4 text-gray-700">Nossa primeira foto</p>
                 </div>
 
-                <!-- Foto 2: Em São Paulo -->
+                <!-- Foto 2 -->
                 <div class="polaroid w-64 md:w-72">
                     <div class="h-64 bg-gray-200 overflow-hidden">
                         <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.50.14-1.jpeg" 
@@ -346,7 +423,7 @@
                     <p class="font-handwriting text-3xl mt-4 text-gray-700">A gente em São Paulo</p>
                 </div>
 
-                <!-- Foto 3: Restaurante -->
+                <!-- Foto 3 -->
                 <div class="polaroid w-64 md:w-72">
                     <div class="h-64 bg-gray-200 overflow-hidden">
                         <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.53.48.jpeg" 
@@ -355,7 +432,7 @@
                     <p class="font-handwriting text-3xl mt-4 text-gray-700">Nosso restaurante preferido</p>
                 </div>
 
-                <!-- Foto 4: Viagem -->
+                <!-- Foto 4 -->
                 <div class="polaroid w-64 md:w-72">
                     <div class="h-64 bg-gray-200 overflow-hidden">
                         <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.50.42.jpeg" 
@@ -364,7 +441,7 @@
                     <p class="font-handwriting text-3xl mt-4 text-gray-700">Nossa viagem de casal</p>
                 </div>
 
-                <!-- Foto 5: Fruto do amor -->
+                <!-- Foto 5 -->
                 <div class="polaroid w-64 md:w-72">
                     <div class="h-64 bg-gray-200 overflow-hidden">
                         <img src="https://resetnoturno.com.br/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-24-at-15.52.16.jpeg" 
@@ -383,7 +460,7 @@
         </div>
     </section>
 
-    <!-- 5. TIMELINE HISTÓRIA -->
+    <!-- 6. TIMELINE HISTÓRIA -->
     <section class="py-16 bg-white relative">
         <div class="container mx-auto px-4 max-w-2xl">
             <h2 class="text-5xl font-title text-center text-red-600 mb-16">Nossa História</h2>
@@ -471,7 +548,63 @@
         </div>
     </section>
 
-    <!-- 6. MODAL DA CARTA (ESCONDIDO) -->
+    <!-- 7. NOSSOS SONHOS (NOVO!) -->
+    <section class="py-16 bg-red-50">
+        <div class="container mx-auto px-4 max-w-xl">
+            <h2 class="text-4xl font-title text-center text-red-600 mb-8">Nossos Sonhos & Futuro</h2>
+            
+            <div class="space-y-4">
+                <!-- Itens Realizados -->
+                <div class="checklist-item opacity-80">
+                    <div class="check-box checked"><i class="fas fa-check text-xs"></i></div>
+                    <span class="text-gray-600 line-through">Nosso primeiro encontro</span>
+                </div>
+                <div class="checklist-item opacity-80">
+                    <div class="check-box checked"><i class="fas fa-check text-xs"></i></div>
+                    <span class="text-gray-600 line-through">Passar o Natal Juntos</span>
+                </div>
+                
+                <!-- Itens Futuros -->
+                <div class="checklist-item transform scale-105 border-2 border-red-200">
+                    <div class="check-box unchecked"></div>
+                    <span class="text-gray-800 font-bold">Morar na nossa casinha</span>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box unchecked"></div>
+                    <span class="text-gray-700">Viajar o mundo juntos</span>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box unchecked"></div>
+                    <span class="text-gray-700">Construir nossa família</span>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box unchecked"></div>
+                    <span class="text-gray-700">Envelhecer lado a lado</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. BOTÃO DA SAUDADE (NOVO!) -->
+    <section class="py-16 bg-white text-center">
+        <div class="container mx-auto px-4 max-w-lg">
+            <div class="saudade-card p-8">
+                <i class="fas fa-heart-pulse text-5xl text-red-400 mb-4 animate-bounce"></i>
+                <h3 class="text-2xl font-title text-gray-800 mb-2">Está com saudade?</h3>
+                <p class="text-sm text-gray-500 mb-6">Clique no botão abaixo sempre que quiser lembrar o quanto eu te amo.</p>
+                
+                <button onclick="showReason()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 mb-6">
+                    <i class="fas fa-magic mr-2"></i> Receber Carinho
+                </button>
+
+                <div id="love-reason" class="hidden animate-fade-in-up">
+                    <p class="text-2xl font-title text-red-600 tracking-wide" id="reason-text">...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. MODAL DA CARTA (ESCONDIDO) -->
     <div id="letter-modal" class="fixed inset-0 z-[9999] bg-black/80 hidden opacity-0 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-[#fffdf5] w-full max-w-2xl rounded-lg shadow-2xl relative transform transition-all scale-95 duration-500" id="letter-content">
             
@@ -576,16 +709,7 @@
         const startDate = new Date(2024, 5, 12, 20, 0, 0); 
 
         function updateCounter() {
-            // Simulando que "agora" é 24 de Dezembro de 2025, já que o usuário pediu esse contexto
-            // Se você quiser usar a data REAL do sistema, troque fixedNow por new Date()
-            // Mas para o exemplo funcionar como pedido (contexto de 2025):
-            
-            // ATENÇÃO: Vou usar a data real do sistema para o contador funcionar pra sempre
-            // Mas se quiser travar em 2025, descomente a linha abaixo:
-            // const now = new Date(2025, 11, 24, 15, 11); 
-            
             const now = new Date(); // Data real atual
-            
             const diff = now - startDate;
 
             if (diff >= 0) {
@@ -628,6 +752,37 @@
         }
 
         setInterval(createFallingElement, 400);
+
+        // --- 4. LÓGICA DO POTE DO AMOR (MOTIVOS) ---
+        const reasons = [
+            "Amo o jeito que você sorri para mim.",
+            "Você é meu porto seguro.",
+            "Amo nossas conversas sobre o futuro.",
+            "Adoro quando a gente fica em silêncio juntos.",
+            "Você me faz querer ser alguém melhor.",
+            "Seu cheiro é a melhor coisa do mundo.",
+            "Amo como você cuida de mim.",
+            "Você é a mulher mais linda que já vi.",
+            "Sinto sua falta a cada segundo.",
+            "Amo planejar nossa vida juntos.",
+            "Amo como você ama a Preta e os gatos.",
+            "Sua risada é minha música favorita.",
+            "Amo quando a gente assiste filmes juntinhos.",
+            "Adoro nossos momentos vendo Dandadan."
+        ];
+
+        function showReason() {
+            const display = document.getElementById('love-reason');
+            const text = document.getElementById('reason-text');
+            
+            display.classList.add('hidden');
+            
+            setTimeout(() => {
+                const randomReason = reasons[Math.floor(Math.random() * reasons.length)];
+                text.innerText = `"${randomReason}"`;
+                display.classList.remove('hidden');
+            }, 200);
+        }
     </script>
 </body>
 </html>
